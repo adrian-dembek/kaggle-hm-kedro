@@ -4,8 +4,7 @@ generated using Kedro 0.18.0
 """
 
 from kedro.pipeline import Pipeline, node, pipeline
-
-from .feature_engineering import *
+from .nodes import define_entity_set, get_selected_fs_params, calculate_entity_fs, automatically_preselect_features
 
 def create_pipeline(**kwargs) -> Pipeline:
     return pipeline(
@@ -57,11 +56,8 @@ def create_pipeline(**kwargs) -> Pipeline:
                 func=automatically_preselect_features,
                 inputs=["customers_fs",
                         "params:remove_single_value",
-                        "params:remove_low_information",
                         "params:remove_highly_null",
-                        "params:pct_null_threshold",
-                        "params:remove_highly_correlated",
-                        "params:pct_corr_threshold"
+                        "params:pct_null_threshold"
                        ],
                 outputs="customers_fs_preselected",
             ),
@@ -70,11 +66,8 @@ def create_pipeline(**kwargs) -> Pipeline:
                 func=automatically_preselect_features,
                 inputs=["articles_fs",
                         "params:remove_single_value",
-                        "params:remove_low_information",
                         "params:remove_highly_null",
-                        "params:pct_null_threshold",
-                        "params:remove_highly_correlated",
-                        "params:pct_corr_threshold"
+                        "params:pct_null_threshold"
                        ],
                 outputs="articles_fs_preselected",
             )

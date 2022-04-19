@@ -118,7 +118,31 @@ baskets_cleaned:
 customers_fs:
   type: pandas.ParquetDataSet
   filepath: data/04_feature/customers_fs.parquet
-  layer: clean
+  layer: features
   load_args:
     engine: pyarrow
     use_nullable_dtypes: True    
+
+customers_fs_preselected:
+  type: pandas.ParquetDataSet
+  filepath: data/04_feature/customers_fs_preselected.parquet
+  layer: features
+  load_args:
+    engine: pyarrow
+    use_nullable_dtypes: True
+
+articles_fs:
+  type: pandas.ParquetDataSet
+  filepath: data/04_feature/articles_fs.parquet
+  layer: features
+  load_args:
+    engine: pyarrow
+    use_nullable_dtypes: True    
+
+articles_fs_preselected:
+  type: pandas.ParquetDataSet
+  filepath: data/04_feature/articles_fs_preselected.parquet
+  layer: features
+  load_args:
+    engine: pyarrow
+    use_nullable_dtypes: True

@@ -8,37 +8,28 @@ transactions_sample_share: 1
 # FEATURE STORE DEV PARAMETERS
 fs_n_jobs: -1
 customers_max_depth: 3
+articles_max_depth: 3
 
 selected_fs_dates:
   - 2020-09-22
 
 selected_fs_windows:
-   - 1Y
-   - 9M
-  # - 6M
-  # - 3M
-  # - 8W
-  # - 4W
-  # - 2W
-  # - 1W
+  - 6M
+  - 2W
+
   
 selected_agg_primitives:
   - Count 
   - Mean 
   - Sum
-  - Entropy({'dropna':False})
-  - TimeSinceLast({'unit':'days'}) 
   - AvgTimeBetween({'unit':'days'})
 
 selected_trans_primitives:
-  - And
   - TimeSincePrevious({'unit':'days'})
 
 # which statistics to calculate for "interesting values" defined above
 selected_where_primitives:
   - Count
-  - TimeSinceLast({'unit':'days'})
-  - AvgTimeBetween({'unit':'days'})
 
 
 ############################################
@@ -60,8 +51,6 @@ interesting_baskets_values_dict:
 interesting_customers_values_dict:
   fashion_news_frequency: 
     - Regularly
-    # - None
-    # - Monthly
 
 ############################################
 # PRESELECTION OF FEATURES ALGORITHMS PARAMS

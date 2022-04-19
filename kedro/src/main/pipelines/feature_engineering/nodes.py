@@ -151,7 +151,8 @@ def get_selected_fs_params(selected_fs_dates,
     
     return selected_fs_dates_timestamps, selected_fs_windows_dict, selected_agg_primitives_ft, selected_trans_primitives_ft, selected_where_primitives_ft
 
-
+################################
+# CALCULATE ENTITY FEATURE STORE
 def calculate_entity_fs(articles, 
                         customers, 
                         transactions, 
@@ -181,16 +182,17 @@ def calculate_entity_fs(articles,
 
     from woodwork.logical_types import Boolean, Double, Categorical, Ordinal, PostalCode, Datetime, AgeNullable, NaturalLanguage
 
+    ############################
+    #### DASK LOCAL CLUSTER ####
+    local_cluster = LocalCluster(n_workers=4, 
+                                 threads_per_worker=1,
+                                 memory_limit='1GB'
+                                )
+    
+    print('Running cluster:', '\n', local_cluster)
+    ####
+    ############################
 
-    # set up cluster and workers
-    local_cluster = LocalCluster(n_workers=96, 
-                                 threads_per_worker=2,
-                                 dashboard_address=':8787',
-                                 memory_limit='3.75GB')
-    
-    print('Running cluster:', '\n', 
-          local_cluster)
-    
     
     # get processed fs params based on conf   
     selected_fs_dates_timestamps, \
@@ -279,14 +281,12 @@ def calculate_entity_fs(articles,
     print('\n', 'FINISHED')
     return entity_fs
 
-
+######################################
+# AUTOMATICAL PRESELECTION OF FEATURES
 def automatically_preselect_features(fs,
                                       remove_single_value,
-                                      remove_low_information,
                                       remove_highly_null,
-                                      pct_null_threshold,
-                                      remove_highly_correlated,
-                                      pct_corr_threshold
+                                      pct_null_threshold
                                      ):
 
     import featuretools as ft
@@ -300,33 +300,14 @@ def automatically_preselect_features(fs,
         print('removed ' + str(removed_n_cols) + ' features with single value')
         curr_n_cols = fs.shape[1]    
         print('curr_n_cols:', curr_n_cols)
-        
-    if remove_low_information==True:
-        fs = ft.selection.remove_low_information_features(fs)
-        removed_n_cols = curr_n_cols - fs.shape[1]
-        print('removed ' + str(removed_n_cols) + ' features with low information')
-        curr_n_cols = fs.shape[1]
-        print('curr_n_cols:', curr_n_cols)
-    
+            
     if remove_highly_null==True:
         fs = ft.selection.remove_highly_null_features(fs, pct_null_threshold=pct_null_threshold)
         removed_n_cols = curr_n_cols - fs.shape[1]
         print('removed ' + str(removed_n_cols) + ' highly null features')
         curr_n_cols = fs.shape[1]  
         print('curr_n_cols:', curr_n_cols)
-        
-    if remove_highly_correlated==True:
-        fs = ft.selection.remove_highly_correlated_features(fs, pct_corr_threshold=pct_corr_threshold)
-        removed_n_cols = curr_n_cols - fs.shape[1]
-        print('removed ' + str(removed_n_cols) + ' highly correlated features')
-        curr_n_cols = fs.shape[1]  
-        print('curr_n_cols:', curr_n_cols)
-
-    # not working
-    # ft.selection.remove_highly_correlated_features(feature_matrix_customers)
-        
-    print('Remaining number of features after automatic selection: ' + str(curr_n_cols))
-    
+        print('Remaining number of features after automatic selection: ' + str(curr_n_cols))
     
     return fs
 
