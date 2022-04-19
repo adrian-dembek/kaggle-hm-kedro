@@ -12,3 +12,4 @@ pytest-mock>=1.7.1, <2.0
 pytest~=6.2
 woodwork==0.15.0
 featuretools==1.8.0
+pyarrow==7.0.0

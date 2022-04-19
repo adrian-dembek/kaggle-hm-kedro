@@ -2,6 +2,8 @@
 This is a boilerplate pipeline 'data_cleaning'
 generated using Kedro 0.18.0
 """
+from kedro.extras.datasets.pandas import ParquetDataSet
+
 def clean_articles(articles):
 
     print('cleaning articles df...')
@@ -53,7 +55,7 @@ def clean_transactions(transactions):
     import uuid
     
     print('cleaning transactions df...')
-    transactions.rename(columns={'t_dat': 't_date'}, inplace=True)
+    transactions = transactions.rename(columns={'t_dat': 't_date'})
     print('t_dat renamed to t_date')
 
 

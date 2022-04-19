@@ -5,45 +5,45 @@
 
 # original csv renamed to "_raw", because they will be sampled 
 # then, names without suffix will be used
-articles_raw:
-  type: pandas.CSVDataSet
-  filepath: data/01_raw/articles.csv
-  layer: raw
-  load_args:
-    dtype:
-      article_id: str
-      product_code: str
-      product_type_no: str
-      graphical_appearance_no: str
-      colour_group_code: str
-      perceived_colour_value_id: str
-      perceived_colour_master_id: str
-      department_no: str
-      index_code: str
-      index_group_no: str
-      section_no: str
-      garment_group_no: str
+# articles_raw:
+#   type: pandas.CSVDataSet
+#   filepath: data/01_raw/articles.csv
+#   layer: raw
+#   load_args:
+#     dtype:
+#       article_id: str
+#       product_code: str
+#       product_type_no: str
+#       graphical_appearance_no: str
+#       colour_group_code: str
+#       perceived_colour_value_id: str
+#       perceived_colour_master_id: str
+#       department_no: str
+#       index_code: str
+#       index_group_no: str
+#       section_no: str
+#       garment_group_no: str
       
-customers_raw:
-  type: pandas.CSVDataSet
-  filepath: data/01_raw/customers.csv
-  layer: raw
-  load_args:
-    dtype:
-      age: Int64
+# customers_raw:
+#   type: pandas.CSVDataSet
+#   filepath: data/01_raw/customers.csv
+#   layer: raw
+#   load_args:
+#     dtype:
+#       age: Int64
 
-transactions_raw:
-  type: pandas.CSVDataSet
-  filepath: data/01_raw/transactions_train.csv
-  layer: raw
-  load_args:
-    dtype:
-      customer_id: str
-      article_id: str
-      sales_channel_id: str
+# transactions_raw:
+#   type: pandas.CSVDataSet
+#   filepath: data/01_raw/transactions_train.csv
+#   layer: raw
+#   load_args:
+#     dtype:
+#       customer_id: str
+#       article_id: str
+#       sales_channel_id: str
   
-  #######################################################
-# sampled CSVs - names of objects in line with base environment
+#######################################################
+# SAMPLED DATA
 
 # kedro run --pipeline sample -e sample
 articles:
@@ -56,7 +56,7 @@ articles:
 
 transactions:
   type: pandas.ParquetDataSet
-  filepath: data/02_intermediate/sampled_customers_s001.parquet
+  filepath: data/02_intermediate/transactions_train_sampled_customers_s001.parquet
   layer: intermediate
   load_args:
     engine: pyarrow
@@ -64,8 +64,49 @@ transactions:
 
 customers:
   type: pandas.ParquetDataSet
-  filepath: data/02_intermediate/transactions_train_sampled_customers_s001.parquet
+  filepath: data/02_intermediate/sampled_customers_s001.parquet
   layer: intermediate
+  load_args:
+    engine: pyarrow
+    use_nullable_dtypes: True
+
+#######################################################
+# CLEANED DATA
+
+# RUN ALL NODES
+# kedro run --pipeline clean -e sample
+
+# kedro run --pipeline clean -n articles -e sample
+articles_cleaned:
+  type: pandas.ParquetDataSet
+  filepath: data/03_primary/articles_cleaned.parquet
+  layer: clean
+  load_args:
+    engine: pyarrow
+    use_nullable_dtypes: True
+
+# kedro run --pipeline clean -n customers -e sample
+customers_cleaned:
+  type: pandas.ParquetDataSet
+  filepath: data/03_primary/customers_cleaned.parquet
+  layer: clean
+  load_args:
+    engine: pyarrow
+    use_nullable_dtypes: True
+
+# kedro run --pipeline clean -n transactions -e sample
+transactions_cleaned:
+  type: pandas.ParquetDataSet
+  filepath: data/03_primary/transactions_cleaned.parquet
+  layer: clean
+  load_args:
+    engine: pyarrow
+    use_nullable_dtypes: True
+# >> created from transactions cleaning pipeline
+baskets_cleaned:
+  type: pandas.ParquetDataSet
+  filepath: data/03_primary/baskets_cleaned.parquet
+  layer: clean
   load_args:
     engine: pyarrow
     use_nullable_dtypes: True
