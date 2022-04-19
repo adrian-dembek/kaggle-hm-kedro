@@ -1,0 +1,44 @@
+# Here you can define all your data sets by using simple YAML syntax.
+#
+# Documentation for this file format can be found in "The Data Catalog"
+# Link: https://kedro.readthedocs.io/en/stable/data/data_catalog.html
+
+# original csv renamed to "_raw", because they will be sampled 
+# then, names without suffix will be used
+articles_raw:
+  type: pandas.CSVDataSet
+  filepath: data/01_raw/articles.csv
+  layer: raw
+  load_args:
+    dtype:
+      article_id: str
+      product_code: str
+      product_type_no: str
+      graphical_appearance_no: str
+      colour_group_code: str
+      perceived_colour_value_id: str
+      perceived_colour_master_id: str
+      department_no: str
+      index_code: str
+      index_group_no: str
+      section_no: str
+      garment_group_no: str
+      
+customers_raw:
+  type: pandas.CSVDataSet
+  filepath: data/01_raw/customers.csv
+  layer: raw
+  load_args:
+    dtype:
+      age: Int64
+
+transactions_raw:
+  type: pandas.CSVDataSet
+  filepath: data/01_raw/transactions_train.csv
+  layer: raw
+  load_args:
+    dtype:
+      customer_id: str
+      article_id: str
+      sales_channel_id: str
+  
