@@ -26,13 +26,13 @@ kedro run --pipeline sample -e sample
 ```
 kedro run --pipeline clean -e sample
 ```
-See the results in the notebook [here](notebooks/data_check.ipynb)
+See the results in the notebook [here](kedro/notebooks/data_check.ipynb)
 
 ##### 3. generate customers- and articles- feature stores
 ```
 kedro run --pipeline create_fs -e sample
 ```
-See the results in the notebook [here](notebooks/feature_store_check.ipynb) 
+See the results in the notebook [here](kedro/notebooks/feature_store_check.ipynb) 
 
 ##### 4. generate customers- feature store with more variables using extend_customers_fs environment
  ```
