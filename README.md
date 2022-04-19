@@ -1,9 +1,12 @@
 # kaggle-hm-kedro
 
+### Set up the environment
 ##### install kedro with:
 ```
 pip install kedro
 ```
+
+Kedro project was created with:
 ```
 kedro new
     [New Kedro Project]: Kaggle H&M
