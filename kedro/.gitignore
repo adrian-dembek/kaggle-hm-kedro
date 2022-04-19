@@ -22,6 +22,10 @@ logs/**
 
 # also keep the example dataset
 !data/01_raw/iris.csv
+!data/02_intermediate/articles.parquet
+!data/02_intermediate/sampled_customers_s001.parquet
+!data/02_intermediate/transactions_train_sampled_customers_s001.parquet
+
 
 
 ##########################
