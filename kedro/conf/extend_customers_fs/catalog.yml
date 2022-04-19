@@ -1,0 +1,128 @@
+# Here you can define all your data sets by using simple YAML syntax.
+#
+# Documentation for this file format can be found in "The Data Catalog"
+# Link: https://kedro.readthedocs.io/en/stable/data/data_catalog.html
+
+# original csv renamed to "_raw", because they will be sampled 
+# then, names without suffix will be used
+# articles_raw:
+#   type: pandas.CSVDataSet
+#   filepath: data/01_raw/articles.csv
+#   layer: raw
+#   load_args:
+#     dtype:
+#       article_id: str
+#       product_code: str
+#       product_type_no: str
+#       graphical_appearance_no: str
+#       colour_group_code: str
+#       perceived_colour_value_id: str
+#       perceived_colour_master_id: str
+#       department_no: str
+#       index_code: str
+#       index_group_no: str
+#       section_no: str
+#       garment_group_no: str
+      
+# customers_raw:
+#   type: pandas.CSVDataSet
+#   filepath: data/01_raw/customers.csv
+#   layer: raw
+#   load_args:
+#     dtype:
+#       age: Int64
+
+# transactions_raw:
+#   type: pandas.CSVDataSet
+#   filepath: data/01_raw/transactions_train.csv
+#   layer: raw
+#   load_args:
+#     dtype:
+#       customer_id: str
+#       article_id: str
+#       sales_channel_id: str
+  
+#######################################################
+## SAMPLED DATA
+
+## To run all nodes 
+# HERE JUST AS AN EXAMPLE AS NO SAMPLING NODES AND NO RAW DATA IS PROVIDED IN THE REPO
+# kedro run --pipeline sample -e sample
+
+articles:
+  type: pandas.ParquetDataSet
+  filepath: data/02_intermediate/articles.parquet
+  layer: intermediate
+  load_args:
+    engine: pyarrow
+    use_nullable_dtypes: True
+
+transactions:
+  type: pandas.ParquetDataSet
+  filepath: data/02_intermediate/transactions_train_sampled_customers_s001.parquet
+  layer: intermediate
+  load_args:
+    engine: pyarrow
+    use_nullable_dtypes: True
+
+customers:
+  type: pandas.ParquetDataSet
+  filepath: data/02_intermediate/sampled_customers_s001.parquet
+  layer: intermediate
+  load_args:
+    engine: pyarrow
+    use_nullable_dtypes: True
+
+#######################################################
+## CLEANED DATA
+
+## To run all nodes
+# kedro run --pipeline clean -e sample
+
+## To run a selected node (name after -n comes from 'pipeline.py' file)
+# kedro run --pipeline clean -n articles -e sample
+articles_cleaned:
+  type: pandas.ParquetDataSet
+  filepath: data/03_primary/articles_cleaned.parquet
+  layer: clean
+  load_args:
+    engine: pyarrow
+    use_nullable_dtypes: True
+
+# kedro run --pipeline clean -n customers -e sample
+customers_cleaned:
+  type: pandas.ParquetDataSet
+  filepath: data/03_primary/customers_cleaned.parquet
+  layer: clean
+  load_args:
+    engine: pyarrow
+    use_nullable_dtypes: True
+
+# kedro run --pipeline clean -n transactions -e sample
+transactions_cleaned:
+  type: pandas.ParquetDataSet
+  filepath: data/03_primary/transactions_cleaned.parquet
+  layer: clean
+  load_args:
+    engine: pyarrow
+    use_nullable_dtypes: True
+# >> created from transactions cleaning pipeline
+baskets_cleaned:
+  type: pandas.ParquetDataSet
+  filepath: data/03_primary/baskets_cleaned.parquet
+  layer: clean
+  load_args:
+    engine: pyarrow
+    use_nullable_dtypes: True
+
+#######################################################
+# FEATURE STORES
+# kedro run --pipeline create_fs -e extend_cusomers_fs
+
+customers_fs:
+  type: pandas.ParquetDataSet
+  filepath: data/04_feature/customers_fs_extended.parquet
+  layer: features
+  load_args:
+    engine: pyarrow
+    use_nullable_dtypes: True    
