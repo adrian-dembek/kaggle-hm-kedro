@@ -1,0 +1,80 @@
+#################################
+# -e cpu96_customer_fs_restricted
+
+customers_sample_share: 0.01
+articles_sample_share: 1
+transactions_sample_share: 1
+
+# FEATURE STORE DEV PARAMETERS
+fs_n_jobs: -1
+customers_max_depth: 3
+
+selected_fs_dates:
+  - 2020-09-22
+
+selected_fs_windows:
+   - 1Y
+   - 9M
+  # - 6M
+  # - 3M
+  # - 8W
+  # - 4W
+  # - 2W
+  # - 1W
+  
+selected_agg_primitives:
+  - Count 
+  - Mean 
+  - Sum
+  - Entropy({'dropna':False})
+  - TimeSinceLast({'unit':'days'}) 
+  - AvgTimeBetween({'unit':'days'})
+
+selected_trans_primitives:
+  - And
+  - TimeSincePrevious({'unit':'days'})
+
+# which statistics to calculate for "interesting values" defined above
+selected_where_primitives:
+  - Count
+  - TimeSinceLast({'unit':'days'})
+  - AvgTimeBetween({'unit':'days'})
+
+
+############################################
+# INTERESTING VALUES 
+# https://featuretools.alteryx.com/en/stable/guides/tuning_dfs.html#Add-"interesting"-values-to-columns
+
+intresting_articles_values_dict: 
+  product_type_name:
+    - Trousers
+    - Dress
+    - Sweater
+    - T-shirt
+    - Top
+
+interesting_baskets_values_dict:
+  if_online_sales_channel: 
+    - 1 
+
+interesting_customers_values_dict:
+  fashion_news_frequency: 
+    - Regularly
+    # - None
+    # - Monthly
+
+############################################
+# PRESELECTION OF FEATURES ALGORITHMS PARAMS
+# https://featuretools.alteryx.com/en/stable/guides/feature_selection.html
+remove_single_value: True
+
+remove_low_information: True
+
+remove_highly_null: True
+pct_null_threshold: 0.99
+
+remove_highly_correlated: True
+pct_corr_threshold: 0.99
+
+
+
