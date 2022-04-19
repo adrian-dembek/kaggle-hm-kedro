@@ -42,3 +42,30 @@ transactions_raw:
       article_id: str
       sales_channel_id: str
   
+  #######################################################
+# sampled CSVs - names of objects in line with base environment
+
+# kedro run --pipeline sample -e sample
+articles:
+  type: pandas.ParquetDataSet
+  filepath: data/02_intermediate/articles.parquet
+  layer: intermediate
+  load_args:
+    engine: pyarrow
+    use_nullable_dtypes: True
+
+transactions:
+  type: pandas.ParquetDataSet
+  filepath: data/02_intermediate/sampled_customers_s001.parquet
+  layer: intermediate
+  load_args:
+    engine: pyarrow
+    use_nullable_dtypes: True
+
+customers:
+  type: pandas.ParquetDataSet
+  filepath: data/02_intermediate/transactions_train_sampled_customers_s001.parquet
+  layer: intermediate
+  load_args:
+    engine: pyarrow
+    use_nullable_dtypes: True
