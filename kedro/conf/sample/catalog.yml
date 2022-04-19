@@ -43,9 +43,11 @@
 #       sales_channel_id: str
   
 #######################################################
-# SAMPLED DATA
+## SAMPLED DATA
 
+## To run all nodes
 # kedro run --pipeline sample -e sample
+
 articles:
   type: pandas.ParquetDataSet
   filepath: data/02_intermediate/articles.parquet
@@ -71,11 +73,12 @@ customers:
     use_nullable_dtypes: True
 
 #######################################################
-# CLEANED DATA
+## CLEANED DATA
 
-# RUN ALL NODES
+## To run all nodes
 # kedro run --pipeline clean -e sample
 
+## To run a selected node (name after -n comes from 'pipeline.py' file)
 # kedro run --pipeline clean -n articles -e sample
 articles_cleaned:
   type: pandas.ParquetDataSet
@@ -113,8 +116,8 @@ baskets_cleaned:
 
 #######################################################
 # FEATURE STORES
+# kedro run --pipeline create_fs -e sample
 
-# kedro run --pipeline create_fs -n customers -e sample
 customers_fs:
   type: pandas.ParquetDataSet
   filepath: data/04_feature/customers_fs.parquet
