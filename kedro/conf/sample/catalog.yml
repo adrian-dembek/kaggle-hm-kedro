@@ -110,3 +110,15 @@ baskets_cleaned:
   load_args:
     engine: pyarrow
     use_nullable_dtypes: True
+
+#######################################################
+# FEATURE STORES
+
+# kedro run --pipeline create_fs -n customers -e sample
+customers_fs:
+  type: pandas.ParquetDataSet
+  filepath: data/04_feature/customers_fs.parquet
+  layer: clean
+  load_args:
+    engine: pyarrow
+    use_nullable_dtypes: True    
