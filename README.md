@@ -21,7 +21,7 @@ pip install -r src/requirements.txt
 ```
 
 ##### To start a new Kedro project:
-Kedro project thar is ready to use in the repository was created with:
+Kedro project that is ready to use in the repository was created with:
 ```
 kedro new
     [New Kedro Project]: Kaggle H&M
