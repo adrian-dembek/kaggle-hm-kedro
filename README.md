@@ -6,11 +6,11 @@ Here, we decided to share a solution with a part of the approach on how to use K
 
 Below you can find an instruction wits steps leading to the resulting feature stores. To avoid extensive data loading, I purposly ommitted "sampling" part which uses raw data and started the pipeline from the second step which is "data cleaning". I encourage you to fill in the gap, write a sampling function (node) and run the pipeline to get the sampled datasets I included in the repo.
 
-### Set up the environment
+## Set up the environment
 
-##### Clone the repository
+##### 1. Clone the repository
 
-##### Install kedro with:
+##### 2. Install kedro with:
 ```
 pip install kedro
 ```
@@ -23,6 +23,8 @@ kedro new
     [kaggle_h&m]: main
 ```
 
+##### 3. Create conda environment
+
 ```
 cd kedro
 conda create --name kedro
@@ -30,6 +32,8 @@ conda activate kedro
 conda install pip
 pip install -r src/requirements.txt
 ```
+
+## Run kedro pipelines
 
 ##### 1. generate sampled datasets from raw CSVs and save them as parquet files (HERE JUST AS AN EXAMPLE AS NO SAMPLING NODES AND NO RAW DATA IS PROVIDED IN THE REPO)
 kedro run --pipeline sample -e sample
@@ -44,7 +48,7 @@ See the results in the notebook [here](kedro/notebooks/data_check.ipynb)
 ```
 kedro run --pipeline create_fs -e sample
 ```
-See the results in the notebook [here](kedro/notebooks/feature_store_check.ipynb) 
+See the results in the notebook [here](kedro/notebooks/feature_store_check.ipynb)
 
 ##### 4. generate customers- feature store with more variables using extend_customers_fs environment
  ```
