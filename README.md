@@ -50,4 +50,4 @@ See the results in the notebook [here](kedro/notebooks/feature_store_check.ipynb
  ```
 kedro run --pipeline create_fs -n customer -e extend_customers_fs
  ```
-See the results in the notebook [here] (notebooks/feature_store_check.ipynb) 
+See the results in the notebook [here] (kedro/notebooks/feature_store_check.ipynb) 
