@@ -13,6 +13,9 @@ Below you can find an instruction wits steps leading to the resulting feature st
 ## Set up the environment
 
 ##### 1. Clone the repository
+```
+git clone https://github.com/adrian-dembek/kaggle-hm-kedro.git
+```
 
 ##### 2. Create conda environment
 
