@@ -7,7 +7,10 @@ Here, we decided to share a solution with a part of the approach on how to use K
 Below you can find an instruction wits steps leading to the resulting feature stores. To avoid extensive data loading, I purposly ommitted "sampling" part which uses raw data and started the pipeline from the second step which is "data cleaning". I encourage you to fill in the gap, write a sampling function (node) and run the pipeline to get the sampled datasets I included in the repo.
 
 ### Set up the environment
-##### install kedro with:
+
+##### Clone the repository
+
+##### Install kedro with:
 ```
 pip install kedro
 ```
