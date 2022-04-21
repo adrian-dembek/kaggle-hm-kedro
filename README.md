@@ -4,6 +4,10 @@ Shortly, it is a framework for creating reproducible and modular data science ex
 
 Here, we decided to share a solution with a part of the approach on how to use Kedro and featuretools to **create multiple, reproducible, customizable and scalable feature stores** which can be used in Machine Learning models further in the pipeline. Also, please refer to [Kedro documentation](https://kedro.readthedocs.io/en/stable/index.html) in case of any doubts. 
 
+What we are trying to achieve is a modular pipeline with shared functions, where we would be able to customize each and every 'data cleaning', 'feature engineering', 'propensity modelling', 'recommendation engine', 'ensembling' node and use them in pipelines to achieve a reproducible result.
+![image](https://user-images.githubusercontent.com/24912552/164473659-11deebbd-2bc5-4684-8f19-767d4ab4b9fa.png)
+
+
 Below you can find an instruction wits steps leading to the resulting feature stores.
 
 ## Set up the environment
