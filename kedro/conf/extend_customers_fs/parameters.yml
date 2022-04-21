@@ -7,8 +7,8 @@ transactions_sample_share: 1
 
 # FEATURE STORE DEV PARAMETERS
 fs_n_jobs: -1
-customers_max_depth: 3
-articles_max_depth: 3
+customers_max_depth: 4
+articles_max_depth: 4
 
 ##################
 # added new fs date
@@ -37,7 +37,6 @@ selected_agg_primitives:
 
 selected_trans_primitives:
   - TimeSincePrevious({'unit':'days'})
-  - NumWords
 
 # which statistics to calculate for "interesting values" defined above
 selected_where_primitives:
