@@ -1,5 +1,13 @@
 # kaggle-hm-kedro
 
+[What is Kedro](https://kedro.readthedocs.io/en/stable/introduction/introduction.html) and [how to use it](https://kedro.readthedocs.io/en/stable/tutorial/spaceflights_tutorial.html)? 
+
+Shortly, it is a framework for creating reproducible and modular data science experiments. Thus, we decided to use it while solving the [H&M Personalized Fashion Recommendations](https://www.kaggle.com/competitions/h-and-m-personalized-fashion-recommendations) Kaggle competition. 
+
+Here, we decided to share a solution with a part of the approach on how to use Kedro and featuretools to **create multiple, reproducible, customizable and scalable feature stores** which can be used in Machine Learning models further in the pipeline. Also, please refer to [Kedro documentation](https://kedro.readthedocs.io/en/stable/index.html) in case of any doubts. 
+
+Below you can find an instruction wits steps leading to the resulting feature stores. To avoid extensive data loading, I purposly ommitted "sampling" part which uses raw data and started the pipeline from the second step which is "data cleaning". I encourage you to fill in the gap, write a sampling function (node) and run the pipeline to get the sampled datasets I included in the repo.
+
 ### Set up the environment
 ##### install kedro with:
 ```
