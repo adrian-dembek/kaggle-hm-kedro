@@ -17,7 +17,7 @@ Below you can find an instruction wits steps leading to the resulting feature st
 git clone https://github.com/adrian-dembek/kaggle-hm-kedro.git
 ```
 
-##### 2. Create conda environment and install required libraries
+##### 2. Create conda environment and install required libraries (including kedro itself)
 
 ```
 conda create --name kedro python=3.8
@@ -26,21 +26,41 @@ cd kaggle-hm-kedro/kedro
 pip install -r src/requirements.txt
 ```
 
+To verify if everything works so far run the command
+```
+kedro info
+```
+You should see the following output
+```
+ _            _
+| | _____  __| |_ __ ___
+| |/ / _ \/ _` | '__/ _ \
+|   <  __/ (_| | | | (_) |
+|_|\_\___|\__,_|_|  \___/
+v0.18.0
+
+Kedro is a Python framework for
+creating reproducible, maintainable
+and modular data science code.
+
+```
+
+
 ## Run kedro pipelines
 
-##### 2. clean the data for the purpose of feature engineering
+##### 1. clean the data for the purpose of feature engineering
 ```
-kedro run --pipeline clean -e sample
+kedro run --pipeline clean -e sampled_data
 ```
 See the results in the notebook [here](kedro/notebooks/data_check.ipynb)
 
-##### 3. generate customers- and articles- feature stores
+##### 2. generate customers- and articles- feature stores
 ```
-kedro run --pipeline create_fs -e sample
+kedro run --pipeline create_fs -e sampled_data
 ```
 See the results in the notebook [here](kedro/notebooks/feature_store_check.ipynb)
 
-##### 4. generate customers- feature store with more variables using extend_customers_fs environment
+##### 3. generate customers- feature store with more variables using extend_customers_fs environment
  ```
 kedro run --pipeline create_fs -n customer -e extend_customers_fs
  ```
@@ -77,6 +97,6 @@ Then, follow instructions provided below
 6. run the pipeline with the command below
     
 ```
-kedro run --pipeline sample -e sample
+kedro run --pipeline sample
 ```
 Congratulations! Now you should see that sampled data files have been created and saved to the specified directory.
