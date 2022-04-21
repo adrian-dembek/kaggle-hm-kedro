@@ -10,20 +10,7 @@ Below you can find an instruction wits steps leading to the resulting feature st
 
 ##### 1. Clone the repository
 
-##### 2. Install kedro with:
-```
-pip install kedro
-```
-
-Kedro project thar is ready to use in the repository was created with:
-```
-kedro new
-    [New Kedro Project]: Kaggle H&M
-    [kaggle-h&m]: kedro
-    [kaggle_h&m]: main
-```
-
-##### 3. Create conda environment
+##### 2. Create conda environment
 
 ```
 cd kedro
@@ -31,6 +18,15 @@ conda create --name kedro
 conda activate kedro
 conda install pip
 pip install -r src/requirements.txt
+```
+
+##### To start a new Kedro project:
+Kedro project thar is ready to use in the repository was created with:
+```
+kedro new
+    [New Kedro Project]: Kaggle H&M
+    [kaggle-h&m]: kedro
+    [kaggle_h&m]: main
 ```
 
 ## Run kedro pipelines
