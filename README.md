@@ -20,10 +20,9 @@ git clone https://github.com/adrian-dembek/kaggle-hm-kedro.git
 ##### 2. Create conda environment
 
 ```
-cd kedro
 conda create --name kedro python=3.8
 conda activate kedro
-conda install pip
+cd kaggle-hm-kedro/kedro
 pip install -r src/requirements.txt
 ```
 
