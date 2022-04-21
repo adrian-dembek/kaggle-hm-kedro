@@ -50,13 +50,13 @@ and modular data science code.
 
 ##### 1. clean the data for the purpose of feature engineering
 ```
-kedro run --pipeline clean -e sampled_data
+kedro run --pipeline clean -e local_sampled_data
 ```
 See the results in the notebook [here](kedro/notebooks/data_check.ipynb)
 
 ##### 2. generate customers- and articles- feature stores
 ```
-kedro run --pipeline create_fs -e sampled_data
+kedro run --pipeline create_fs -e local_sampled_data
 ```
 See the results in the notebook [here](kedro/notebooks/feature_store_check.ipynb)
 
