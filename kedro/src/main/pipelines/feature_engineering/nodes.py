@@ -84,10 +84,13 @@ def define_entity_set(articles,
     ####################
     # LAST TIME INDEXES
     # add last time indexes - https://docs.featuretools.com/en/v0.16.0/automated_feature_engineering/handling_time.html
-    es.add_last_time_indexes()
+    es.add_last_time_indexes()    
     
+    print('\n')
+    print('ENTITY SET DEFINITION:')
+    print('----------------------')
     print(es)
-    
+
     return es
 
 
@@ -108,7 +111,10 @@ def get_selected_fs_params(selected_fs_dates,
     
     selected_fs_dates_timestamps = pd.DataFrame([pd.Timestamp(x) for x in selected_fs_dates], 
                                                 columns=['time'])
-    
+        
+    print('\n')
+    print('FEATURE STORE BASE DATES:')
+    print('-------------------------')
     print(selected_fs_dates_timestamps)
     
     ##########
@@ -133,21 +139,21 @@ def get_selected_fs_params(selected_fs_dates,
 
     selected_agg_primitives_ft = [getattr(primitives, x) for x in selected_agg_primitives if '(' not in x] + \
                                     [getattr(primitives, x.split('(')[0])(**eval(x.split('(')[1][:-1])) for x in selected_agg_primitives if '(' in x]
-    print('selected_agg_primitives_ft:', selected_agg_primitives_ft)
+    #print('selected_agg_primitives_ft:', selected_agg_primitives_ft)
 
     ##########
     # TRANS
     selected_trans_primitives_ft = [getattr(primitives, x) for x in selected_trans_primitives if '(' not in x] + \
                                     [getattr(primitives, x.split('(')[0])(**eval(x.split('(')[1][:-1])) for x in selected_trans_primitives if '(' in x]
 
-    print('selected_trans_primitives_ft:', selected_trans_primitives_ft)
+    #print('selected_trans_primitives_ft:', selected_trans_primitives_ft)
     
     ##########
     # WHERE
     selected_where_primitives_ft = [getattr(primitives, x) for x in selected_where_primitives if '(' not in x] + \
                                     [getattr(primitives, x.split('(')[0])(**eval(x.split('(')[1][:-1])) for x in selected_where_primitives if '(' in x]
 
-    print('selected_where_primitives_ft:', selected_where_primitives_ft)
+    #print('selected_where_primitives_ft:', selected_where_primitives_ft)
     
     return selected_fs_dates_timestamps, selected_fs_windows_dict, selected_agg_primitives_ft, selected_trans_primitives_ft, selected_where_primitives_ft
 
@@ -182,14 +188,22 @@ def calculate_entity_fs(articles,
 
     from woodwork.logical_types import Boolean, Double, Categorical, Ordinal, PostalCode, Datetime, AgeNullable, NaturalLanguage
 
+    print('\n')
+    print('----------------------------------------')
+    print('CALCULATING FEATURE STORE FOR:', entity.upper())
+    print('----------------------------------------')
+    print('\n')
     ############################
     #### DASK LOCAL CLUSTER ####
     local_cluster = LocalCluster(n_workers=4, 
                                  threads_per_worker=1,
-                                 memory_limit='1GB'
+                                 memory_limit='2GB'
                                 )
-    
-    print('Running cluster:', '\n', local_cluster)
+    print('\n')
+    print('LOCAL CLUSTER INITIATED:')
+    print('------------------------')
+    print(local_cluster)
+
     ####
     ############################
 
@@ -206,9 +220,6 @@ def calculate_entity_fs(articles,
                                                             selected_trans_primitives, 
                                                             selected_where_primitives)
     
-    print('selected_fs_dates:', selected_fs_dates)
-    print('selected_fs_windows_dict:', selected_fs_windows_dict)
-
     ##################################
     # ENTITY SET DEFINITION
     es = define_entity_set(articles, 
@@ -219,21 +230,17 @@ def calculate_entity_fs(articles,
                            interesting_baskets_values_dict,
                            interesting_customers_values_dict)
     
-    print('Entity set defined')
-    
-    print(es[entity].head(5))
-    
+    print('\n')    
+    print('Entity set has been defined')
+        
     # calculate how many columns will be taken from the source table as is
     n_cols_entity_source = len(list(x for x in es[entity].columns if '_id' not in x and x!='detail_desc'))
     entity_fs_dates = es[entity]\
                     [[es[entity].columns[0]]]\
                     .join(selected_fs_dates_timestamps, how='cross')\
                     .sort_values(['time', es[entity].columns[0]])    
-    print('Index of cutoff_time deinfed - cartesian product of selected dates and customer_ids')
-    print(entity_fs_dates.head())
-
-    print(entity_fs_dates.dtypes)
-
+    
+    print('DataFrame with customer ids and feature store dates has been created')
 
     # iterate over different windows definitions
     for window_label in list(selected_fs_windows_dict.keys()):
@@ -242,7 +249,7 @@ def calculate_entity_fs(articles,
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", category=RuntimeWarning)
             
-            print('calculating fs for window:', window_label)
+            print('Calculating FS for:', window_label, 'window')
             curr_cutoff_fs, curr_cutoff_features_definitions = ft.dfs(entityset = es,
                                                                       target_dataframe_name = entity, 
                                                                       agg_primitives = selected_agg_primitives_ft,
@@ -255,30 +262,29 @@ def calculate_entity_fs(articles,
                                                                       dask_kwargs={'cluster': local_cluster, 'diagnostics port': 49286}, 
                                                                       verbose=True
                                                                   )
-            print('done')
+            print('DONE')
+            print('\n')    
 
         curr_cutoff_fs.columns = list(curr_cutoff_fs.columns[:n_cols_entity_source]) + \
                                     list(curr_cutoff_fs.columns[n_cols_entity_source:] + '_' + window_label)
         
-        print(curr_cutoff_fs.index[:5])
-        print(curr_cutoff_fs[curr_cutoff_fs.columns[:3]].head(5))
-
         # if entity_fs exists, add new set of columns calculated for the current window
         try: 
             entity_fs = entity_fs.merge(curr_cutoff_fs[curr_cutoff_fs.columns[n_cols_entity_source:]], 
                                         on=[es[entity].columns[0], 'time'],
                                         how='left') # to 'EVER' records left join these with shorter windows
-            print('merged new window fs to entity_fs on ['+ es[entity].columns[0]+', "time"]'+ ' index' )
+            print('Merged current-window-FS with the Feature Store on ["'+ es[entity].columns[0]+'" , "time"]'+ ' index' )
 
         except:
-            print('creating entity_fs')
+            print('Creating the Feature Store - part 1.')
             entity_fs = curr_cutoff_fs.copy()
             
             
     entity_fs = entity_fs.reset_index()
     #entity_fs.columns = ['`' + x + '`' for x in entity_fs.columns]
     
-    print('\n', 'FINISHED')
+    print('FINISHED')
+    print('\n') 
     return entity_fs
 
 ######################################
@@ -291,26 +297,40 @@ def automatically_preselect_features(fs,
 
     import featuretools as ft
     
+    if fs.columns[0]=='article_id':
+        entity = 'ARTICLES FS'
+    elif fs.columns[0]=='customer_id':
+        entity = 'CUSTOMERS FS'
+    else:
+        entity = 'UNKNOWN'
+    
+    
+    print('\n')
+    print('AUTOMATIC FEATURE PRESELECTION INITIATED FOR:', entity)
+    print('----------------------------------------------------------')
+    print('\n')
+    
     curr_n_cols = fs.shape[1]
-    print('input df number of features: ' + str(curr_n_cols))
+    print('NUMBER OF FEATURES:', str(curr_n_cols))
     
     if remove_single_value==True:
         fs = ft.selection.remove_single_value_features(fs, count_nan_as_value=True) # to prevent removing "if had_sth==1 else null" features
         removed_n_cols = curr_n_cols - fs.shape[1]
-        print('removed ' + str(removed_n_cols) + ' features with single value')
+        print('\n')
+        print('Removed ' + str(removed_n_cols) + ' single-value features')
         curr_n_cols = fs.shape[1]    
-        print('curr_n_cols:', curr_n_cols)
-            
+        print('Current features count:', curr_n_cols)
+
+        
     if remove_highly_null==True:
         fs = ft.selection.remove_highly_null_features(fs, pct_null_threshold=pct_null_threshold)
         removed_n_cols = curr_n_cols - fs.shape[1]
-        print('removed ' + str(removed_n_cols) + ' highly null features')
+        print('\n')
+        print('Removed ' + str(removed_n_cols) + ' highly null features')
         curr_n_cols = fs.shape[1]  
-        print('curr_n_cols:', curr_n_cols)
-        print('Remaining number of features after automatic selection: ' + str(curr_n_cols))
-    
+        print('Current features count:', curr_n_cols)
+        print('NUMBER OF FEATURES AFTER PRESELECTION:', str(curr_n_cols))
+        print('\n')
+
+
     return fs
-
-    
-
-
