@@ -4,7 +4,7 @@ Shortly, it is a framework for creating reproducible and modular data science ex
 
 Here, we decided to share a solution with a part of the approach on how to use Kedro and featuretools to **create multiple, reproducible, customizable and scalable feature stores** which can be used in Machine Learning models further in the pipeline. Also, please refer to [Kedro documentation](https://kedro.readthedocs.io/en/stable/index.html) in case of any doubts. 
 
-Below you can find an instruction wits steps leading to the resulting feature stores. To avoid extensive data loading, I purposly ommitted "sampling" part which uses raw data and started the pipeline from the second step which is "data cleaning". I encourage you to fill in the gap, write a sampling function (node) and run the pipeline to get the sampled datasets I included in the repo.
+Below you can find an instruction wits steps leading to the resulting feature stores.
 
 ## Set up the environment
 
@@ -31,9 +31,11 @@ kedro new
 
 ## Run kedro pipelines
 
-##### 1. generate sampled datasets from raw CSVs and save them as parquet files (HERE JUST AS AN EXAMPLE AS NO SAMPLING NODES AND NO RAW DATA IS PROVIDED IN THE REPO)
+##### 1. generate sampled datasets from raw CSVs and save them as parquet files
+To avoid extensive data loading, I purposly ommitted "sampling" part which uses raw data and started the pipeline from the second step which is "data cleaning". I encourage you to fill in the gap, write a sampling function (node) and run the pipeline to get the sampled datasets I included in the repo.
+```
 kedro run --pipeline sample -e sample
-
+```
 ##### 2. clean the data for the purpose of feature engineering
 ```
 kedro run --pipeline clean -e sample
