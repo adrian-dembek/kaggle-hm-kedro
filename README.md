@@ -24,22 +24,8 @@ conda install pip
 pip install -r src/requirements.txt
 ```
 
-##### To start a new Kedro project:
-Kedro project that is ready to use in the repository was created with:
-```
-kedro new
-    [New Kedro Project]: Kaggle H&M
-    [kaggle-h&m]: kedro
-    [kaggle_h&m]: main
-```
-
 ## Run kedro pipelines
 
-##### 1. generate sampled datasets from raw CSVs and save them as parquet files
-To avoid extensive data loading, I purposly ommitted "sampling" part which uses raw data and started the pipeline from the second step which is "data cleaning". I encourage you to fill in the gap, write a sampling function (node) and run the pipeline to get the sampled datasets I included in the repo.
-```
-kedro run --pipeline sample -e sample
-```
 ##### 2. clean the data for the purpose of feature engineering
 ```
 kedro run --pipeline clean -e sample
@@ -57,3 +43,37 @@ See the results in the notebook [here](kedro/notebooks/feature_store_check.ipynb
 kedro run --pipeline create_fs -n customer -e extend_customers_fs
  ```
 See the results in the notebook [here] (kedro/notebooks/feature_store_check.ipynb) 
+
+
+## Do it yourself :) 
+
+#####  1. To start a new Kedro project:
+Kedro project that is ready to use in the repository was created with:
+```
+kedro new
+```
+```
+    [New Kedro Project]: Kaggle H&M
+    [kaggle-h&m]: kedro
+    [kaggle_h&m]: main
+```
+
+##### 2. Generate sampled datasets from raw CSVs and save them as parquet files
+To avoid extensive data loading, I purposly ommitted "sampling" part which uses raw data. 
+The pipeline begins with the second step which is "data cleaning". 
+I encourage you to fill in the gap and create a "sampling" pipeline on your own. [Here](https://kedro.readthedocs.io/en/stable/tutorial/create_pipelines.html) please find the documentation of the process.
+Firstly, run the command below to create new pipeline directories:
+```
+kedro pipeline create sampling
+```
+Then, 
+    1. write a "sample()" node in [kedro/src/main/pipelines/sampling/nodes.py](kedro/src/main/pipelines/sampling/nodes.py)
+    2. define parameters you will be using in the sample() node: [kedro/conf/base/parameters/sampling.yml](kedro/conf/base/parameters/sampling.yml)
+    3. define objects (datasets) in the data catalog: [kedro/conf/base/catalog.yml](kedro/conf/base/catalog.yml)
+    4. create a pipeline using the node and parameters from [kedro/src/main/pipelines/sampling/pipeline.py](kedro/src/main/pipelines/sampling/pipeline.py) 
+    5. add the pipeline to the pipeline registry: [kedro/src/main/pipeline_registry.py](kedro/src/main/pipeline_registry.py)
+    6. run the pipeline with the command below to get the sampled datasets I included in the repo.
+```
+kedro run --pipeline sample -e sample
+```
+Congratulations! Now you should be able to see that sampled data files have been created and saved to the specified directory.
