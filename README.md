@@ -1,6 +1,6 @@
 # kaggle-hm-kedro
 
-[What is Kedro](https://kedro.readthedocs.io/en/stable/introduction/introduction.html) and [how to use it](https://kedro.readthedocs.io/en/stable/tutorial/spaceflights_tutorial.html)? 
+### [What is Kedro](https://kedro.readthedocs.io/en/stable/introduction/introduction.html) and [how to use it](https://kedro.readthedocs.io/en/stable/tutorial/spaceflights_tutorial.html)? 
 
 Shortly, it is a framework for creating reproducible and modular data science experiments. Thus, we decided to use it while solving the [H&M Personalized Fashion Recommendations](https://www.kaggle.com/competitions/h-and-m-personalized-fashion-recommendations) Kaggle competition. 
 
