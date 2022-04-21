@@ -15,7 +15,7 @@ Below you can find an instruction wits steps leading to the resulting feature st
 pip install kedro
 ```
 
-Kedro project was created with:
+Kedro project thar is ready to use in the repository was created with:
 ```
 kedro new
     [New Kedro Project]: Kaggle H&M
