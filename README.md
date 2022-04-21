@@ -17,7 +17,7 @@ Below you can find an instruction wits steps leading to the resulting feature st
 git clone https://github.com/adrian-dembek/kaggle-hm-kedro.git
 ```
 
-##### 2. Create conda environment
+##### 2. Create conda environment and install required libraries
 
 ```
 conda create --name kedro python=3.8
