@@ -61,9 +61,11 @@ kedro run --pipeline create_fs -e local_sampled_data
 See the results in the notebook [here](kedro/notebooks/feature_store_check.ipynb)
 
 ##### 3. generate customers- feature store with more variables using extend_customers_fs environment
- ```
+Takes around 15 minutes to finish due to a high number of variables created.
+
+```
 kedro run --pipeline create_fs -n customer -e extend_customers_fs
- ```
+```
 See the results in the notebook [here](kedro/notebooks/feature_store_check.ipynb) 
 
 
